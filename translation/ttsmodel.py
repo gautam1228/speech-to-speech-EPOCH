@@ -39,21 +39,30 @@ for i in range(0, len(y), samples_per_frame):
     if vad.is_speech(segment.tobytes(), sr):
         segments.append(segment)
 
+# Concatenate the speech segments into a single NumPy array
+preprocessed_y5 = np.concatenate(segments)
 # Now segments contain the speech segments detected by VAD
 
+# Find peaks in the audio signal
+peaks, _ = find_peaks(np.abs(preprocessed_y5), height=0.5)
+
+# Apply compression by reducing the amplitude of peaks
+compression_factor = 0.5
+y_compressed = np.copy(preprocessed_y5)
+y_compressed[peaks] *= compression_factor
+# Now y_compressed contains the audio with dynamic range compression applied
 
 
+# Initialize StandardScaler for feature scaling
+scaler = StandardScaler()
 
-# Perform preprocessing on each segment
-preprocessed_segments = []
-for segment in segments:
-    # Perform any preprocessing steps here (e.g., noise reduction, silence removal, etc.)
-    # For demonstration, let's simply perform dynamic range compression on each segment
-    peaks, _ = find_peaks(np.abs(segment), height=0.5)
-    compression_factor = 0.5
-    compressed_segment = np.copy(segment)
-    compressed_segment[peaks] *= compression_factor
-    preprocessed_segments.append(compressed_segment)
+# Reshape y_compressed to a 2D array (assuming it's a 1D array representing audio signal)
+y_reshaped = y_compressed.reshape(-1, 1)
 
-# Now preprocessed_segments contain the preprocessed segments with dynamic range compression applied
+# Scale the features (audio samples) using the scaler
+scaled_audio = scaler.fit_transform(y_reshaped)
 
+# Reshape scaled_audio back to 1D array (if needed)
+scaled_audio = scaled_audio.ravel()
+
+# Now scaled_audio contains the scaled audio signal with zero mean and unit variance

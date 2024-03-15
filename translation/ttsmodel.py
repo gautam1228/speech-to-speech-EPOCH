@@ -46,8 +46,8 @@ samples_per_frame = int(sr * frame_duration / 1000)
 segments = []
 for i in range(0, len(y), samples_per_frame):
     segment = y_normalized[i:i+samples_per_frame]
-    # if vad.is_speech(segment.tobytes(), sr):
-    #     segments.append(segment)
+    if vad.is_speech(segment.tobytes(), sr):
+        segments.append(segment)
 
 # Concatenate the speech segments into a single NumPy array
 preprocessed_y5 = np.concatenate(segments)

@@ -8,7 +8,7 @@ from scipy.signal import find_peaks
 import os
 
 # Load the WAV audio file
-audio_file = os.path.join(os.path.dirname(__file__), 'output_audio.wav')
+audio_file = os.path.join(os.path.dirname(__file__), 'output_file.wav')
 y, sr = librosa.load(audio_file, sr=None)
 
 # Resample the audio to a common sampling rate (e.g., 16 kHz)

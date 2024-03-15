@@ -1,35 +1,44 @@
 import librosa
 import numpy as np
 import noisereduce as nr
-# import webrtcvad
+import webrtcvad
 from scipy.signal import find_peaks
 from sklearn.preprocessing import StandardScaler
 from scipy.signal import find_peaks
 import os
 
+def reduce_noise(audio_data):
+    stft = librosa.stft(audio_data)
+    stft_db = librosa.amplitude_to_db(np.abs(stft))
+    mean_noise = np.mean(stft_db[:, :200], axis=1)
+    stft_db -= mean_noise[:, np.newaxis]
+    noise_reduced_audio = librosa.griffinlim(librosa.db_to_amplitude(stft_db))
+    return noise_reduced_audio
+
+
 # Load the WAV audio file
 audio_file = os.path.join(os.path.dirname(__file__), 'output_file.wav')
 y, sr = librosa.load(audio_file, sr=None)
 
-# Resample the audio to a common sampling rate (e.g., 16 kHz)
+# Resample the audio to a common sampling rate (e.g., 16 kHz) - Preprocessing 1
 target_sr = 16000
 y_resampled = librosa.resample(y, orig_sr=44100, target_sr=16000)
 
-# Normalize the audio to ensure consistent amplitude levels
+# Normalize the audio to ensure consistent amplitude levels - Preprocessing 2
 y_normalized = librosa.util.normalize(y_resampled)
 
 
-# Remove silence using a threshold (e.g., -40 dB)
+# Remove silence using a threshold (e.g., -40 dB) - Preprocessing 3
 y_trimmed, _ = librosa.effects.trim(y_normalized, top_db=40)
 
+# print(y_trimmed.shape)
 
-# Perform noise reduction using the NoiseReduce library
-noisy_part = y_normalized[:10000]  # Example: Consider only the first 10 seconds for noise reduction
-reduced_noise = nr.reduce_noise(y_normalized, noisy_part)
+# Perform noise reduction using the NoiseReduce library - Preprocessing 4
+denoised_audio = reduce_noise(y_trimmed) 
 
 
-# Initialize VAD with aggressiveness level (0-3)
-# vad = webrtcvad.Vad(2)
+# Initialize VAD with aggressiveness level (0-3) - Preprocessing 5
+vad = webrtcvad.Vad(2)
 
 # Segment the audio into frames and perform VAD
 frame_duration = 30  # Frame duration in milliseconds
@@ -44,7 +53,7 @@ for i in range(0, len(y), samples_per_frame):
 preprocessed_y5 = np.concatenate(segments)
 # Now segments contain the speech segments detected by VAD
 
-# Find peaks in the audio signal
+# Find peaks in the audio signal - Preprocessing 6
 peaks, _ = find_peaks(np.abs(preprocessed_y5), height=0.5)
 
 # Apply compression by reducing the amplitude of peaks
@@ -54,7 +63,7 @@ y_compressed[peaks] *= compression_factor
 # Now y_compressed contains the audio with dynamic range compression applied
 
 
-# Initialize StandardScaler for feature scaling
+# Initialize StandardScaler for feature scaling - Preprocessing 7
 scaler = StandardScaler()
 
 # Reshape y_compressed to a 2D array (assuming it's a 1D array representing audio signal)

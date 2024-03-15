@@ -1,18 +1,19 @@
 import librosa
 import numpy as np
 import noisereduce as nr
-import webrtcvad
+# import webrtcvad
 from scipy.signal import find_peaks
 from sklearn.preprocessing import StandardScaler
 from scipy.signal import find_peaks
+import os
 
 # Load the WAV audio file
-audio_file = 'audio.wav'
+audio_file = os.path.join(os.path.dirname(__file__), 'output_audio.wav')
 y, sr = librosa.load(audio_file, sr=None)
 
 # Resample the audio to a common sampling rate (e.g., 16 kHz)
 target_sr = 16000
-y_resampled = librosa.resample(y, sr, target_sr)
+y_resampled = librosa.resample(y, orig_sr=44100, target_sr=16000)
 
 # Normalize the audio to ensure consistent amplitude levels
 y_normalized = librosa.util.normalize(y_resampled)
@@ -28,7 +29,7 @@ reduced_noise = nr.reduce_noise(y_normalized, noisy_part)
 
 
 # Initialize VAD with aggressiveness level (0-3)
-vad = webrtcvad.Vad(2)
+# vad = webrtcvad.Vad(2)
 
 # Segment the audio into frames and perform VAD
 frame_duration = 30  # Frame duration in milliseconds
@@ -36,8 +37,8 @@ samples_per_frame = int(sr * frame_duration / 1000)
 segments = []
 for i in range(0, len(y), samples_per_frame):
     segment = y_normalized[i:i+samples_per_frame]
-    if vad.is_speech(segment.tobytes(), sr):
-        segments.append(segment)
+    # if vad.is_speech(segment.tobytes(), sr):
+    #     segments.append(segment)
 
 # Concatenate the speech segments into a single NumPy array
 preprocessed_y5 = np.concatenate(segments)

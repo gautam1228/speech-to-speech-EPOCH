@@ -4,6 +4,7 @@ import noisereduce as nr
 import webrtcvad
 from scipy.signal import find_peaks
 from sklearn.preprocessing import StandardScaler
+from scipy.signal import find_peaks
 
 # Load the WAV audio file
 audio_file = 'audio.wav'
@@ -42,21 +43,17 @@ for i in range(0, len(y), samples_per_frame):
 
 
 
-# Find peaks in the audio signal
-peaks, _ = find_peaks(np.abs(y), height=0.5)
 
-# Apply compression by reducing the amplitude of peaks
-compression_factor = 0.5
-y_compressed = np.copy(y)
-y_compressed[peaks] *= compression_factor
+# Perform preprocessing on each segment
+preprocessed_segments = []
+for segment in segments:
+    # Perform any preprocessing steps here (e.g., noise reduction, silence removal, etc.)
+    # For demonstration, let's simply perform dynamic range compression on each segment
+    peaks, _ = find_peaks(np.abs(segment), height=0.5)
+    compression_factor = 0.5
+    compressed_segment = np.copy(segment)
+    compressed_segment[peaks] *= compression_factor
+    preprocessed_segments.append(compressed_segment)
 
-# Now y_compressed contains the audio with dynamic range compression applied
+# Now preprocessed_segments contain the preprocessed segments with dynamic range compression applied
 
-
-# Initialize StandardScaler for feature scaling
-scaler = StandardScaler()
-
-# Scale the features (e.g., MFCCs) using the scaler
-scaled_features = scaler.fit_transform(features)
-
-# Now scaled_features contain the scaled features with zero mean and unit variance

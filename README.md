@@ -34,19 +34,7 @@ Our solution leverages deep learning techniques to perform direct translation fr
    pip install -r requirements.txt
    ```
 
-## Usage
-
-1. Run the main script:
-
-   ```
-   python main.py
-   ```
-
-2. Add an audi file in the '.wav' format.
-   
-3. The translated Hindi speech will be output in another file and saved in the file system.
-
-## Dataset
+## Dataset Generation
 
 We created a custom dataset for training the speech-to-speech translation model. Initially, we utilized the LibriSpeech dataset (https://paperswithcode.com/dataset/librispeech), which contains English speech-to-text data. We employed the Google Translate API to convert this English text into Hindi text. Subsequently, the Hindi text was transformed into Hindi audio using gTTS (Google Text-to-Speech), albeit this task was computationally intensive.
 

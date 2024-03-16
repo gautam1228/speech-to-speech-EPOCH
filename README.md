@@ -25,7 +25,7 @@ Our solution leverages deep learning techniques to perform direct translation fr
 1. Clone the repository:
 
    ```
-   git clone https://github.com/yourusername/speech-to-speech-translation-EPOCH.git
+   git clone https://github.com/yourusername/speech-to-speech-translation-DL.git
    ```
 
 2. Install the required dependencies:

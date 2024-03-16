@@ -17,8 +17,8 @@ Our solution leverages deep learning techniques to perform direct translation fr
 - Real-time translation from English to Hindi speech.
 - No intermediate text representation, ensuring faster translation.
 - Developed using deep learning techniques.
-- Custom dataset created for training the model.
 - Utilizes cutting-edge speech processing algorithms.
+- Custom dataset created for training the model.
 
 ## Installation
 
@@ -42,13 +42,13 @@ Our solution leverages deep learning techniques to perform direct translation fr
    python main.py
    ```
 
-2. Speak into the microphone with English speech.
+2. Add an audi file in the '.wav' format.
    
-3. The translated Hindi speech will be output in real-time.
+3. The translated Hindi speech will be output in another file and saved in the file system.
 
 ## Dataset
 
-We created a custom dataset for training the speech-to-speech translation model. The dataset comprises pairs of English and Hindi speech utterances, meticulously curated to ensure diverse and accurate training.
+We created a custom dataset for training the speech-to-speech translation model. Initially, we utilized the LibriSpeech dataset (https://paperswithcode.com/dataset/librispeech), which contains English speech-to-text data. We employed the Google Translate API to convert this English text into Hindi text. Subsequently, the Hindi text was transformed into Hindi audio using gTTS (Google Text-to-Speech), albeit this task was computationally intensive.
 
 ## Challenges
 
@@ -64,9 +64,9 @@ While our current model demonstrates promising results, there are several areas 
 
 ## Contributors
 
-- John Doe (@johndoe)
-- Jane Smith (@janesmith)
-- [Add more contributors if applicable]
+- Mehul Pahuja (@mehulhere)
+- Gautam Singh (@gautam1228)
+- Aditya Aggarwal (@aytida1165)
 
 ## License
 

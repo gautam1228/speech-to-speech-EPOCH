@@ -1,25 +1,42 @@
 import os
 import numpy as np
-import librosa
 import tensorflow as tf
 from tensorflow.keras import layers, models
 
 # Function to load audio samples from directory
-def load_audio_samples(directory):
+def load_audio_samples(directory, max_length=None):
     audio_samples = []
     for filename in os.listdir(directory):
-        if filename.endswith(".wav"):
+        if filename.endswith(".npy"):
             file_path = os.path.join(directory, filename)
-            audio, _ = librosa.load(file_path, sr=None)  # Load audio file
+            audio = np.load(file_path)
+            if max_length is not None:
+                # Pad or truncate audio samples to a fixed length
+                audio = pad_or_truncate(audio, max_length)
             audio_samples.append(audio)
     return np.array(audio_samples)
 
-# Load audio samples from directories
-eng_audio_directory = "eng_audio"
-hindi_audio_directory = "hindi_audio"
+# Function to pad or truncate audio samples to a fixed length
+def pad_or_truncate(audio, max_length):
+    if len(audio) < max_length:
+        audio = np.pad(audio, (0, max_length - len(audio)), mode='constant')
+    elif len(audio) > max_length:
+        audio = audio[:max_length]
+    return audio
 
-X_audio = load_audio_samples(eng_audio_directory)
-y_audio = load_audio_samples(hindi_audio_directory)
+# Load audio samples from directories
+eng_audio_directory = "eng_audios"
+hindi_audio_directory = "hin_audios"
+
+# Find the maximum length of audio samples
+max_length_eng = max(len(np.load(os.path.join(eng_audio_directory, filename))) for filename in os.listdir(eng_audio_directory))
+max_length_hindi = max(len(np.load(os.path.join(hindi_audio_directory, filename))) for filename in os.listdir(hindi_audio_directory))
+max_length = max(max_length_eng, max_length_hindi)
+
+X_audio = load_audio_samples(eng_audio_directory, max_length=max_length)
+print(X_audio.shape)
+y_audio = load_audio_samples(hindi_audio_directory, max_length=max_length)
+print(y_audio.shape)
 
 # Define the encoder
 encoder_input = layers.Input(shape=(None, 1))  # Input shape is (timesteps, features)

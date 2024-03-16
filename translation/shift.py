@@ -2,11 +2,25 @@ import os
 import shutil
 
 def extract_and_rename_wav_files(folders, output_folder):
-    file_counter = 0
+    file_counter = -1
     for folder in folders:
         files = os.listdir(folder)
-        for file in sorted(files):
+        # Custom sorting function
+        def custom_sort(file):
+            basename = os.path.basename(file)
+            # Split the filename into name and extension
+            name, ext = os.path.splitext(basename)
+            # Split the name into parts separated by '/'
+            parts = name.split('/')
+   
+            number = int(parts[-1])
+
+                # Extract the last part which should be a number
+            return (number) # Sort by all parts except the last one and then the number
+
+        for file in sorted(files, key=custom_sort):
             if file.endswith('.wav'):
+                print(file.split('/')[-1])
                 file_counter += 1
                 source_path = os.path.join(folder, file)
                 dest_path = os.path.join(output_folder, f"engAud{file_counter}.wav")

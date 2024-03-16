@@ -1,1 +1,77 @@
-# speech-to-speech-EPOCH
+# Speech-to-Speech Translation Model (English to Hindi)
+
+## Project Overview
+
+This project was developed as part of the EPOCH college hackathon, aimed at addressing Problem Statement 3. Our goal was to create a speech-to-speech translation model that translates English speech to Hindi speech in real-time. 
+
+### Problem Statement:
+
+Problem Statement 3: Develop a real-time speech-to-speech translation model for translating English speech to Hindi speech without using an intermediate text representation.
+
+## Project Description
+
+Our solution leverages deep learning techniques to perform direct translation from English speech to Hindi speech, eliminating the need for text representation in between. This allows for more efficient and seamless translation in real-time scenarios.
+
+### Key Features:
+
+- Real-time translation from English to Hindi speech.
+- No intermediate text representation, ensuring faster translation.
+- Developed using deep learning techniques.
+- Custom dataset created for training the model.
+- Utilizes cutting-edge speech processing algorithms.
+
+## Installation
+
+1. Clone the repository:
+
+   ```
+   git clone https://github.com/yourusername/speech-to-speech-translation.git
+   ```
+
+2. Install the required dependencies:
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+1. Run the main script:
+
+   ```
+   python main.py
+   ```
+
+2. Speak into the microphone with English speech.
+   
+3. The translated Hindi speech will be output in real-time.
+
+## Dataset
+
+We created a custom dataset for training the speech-to-speech translation model. The dataset comprises pairs of English and Hindi speech utterances, meticulously curated to ensure diverse and accurate training.
+
+## Challenges
+
+One of the major challenges we encountered was the constraint of not converting speech to text in the lateral space. This constraint added complexity to the development process as it required designing a model capable of directly translating speech signals without relying on intermediate text representation.
+
+## Future Improvements
+
+While our current model demonstrates promising results, there are several areas for future improvement:
+
+- Enhanced model performance through continued training with larger datasets.
+- Integration of more advanced speech processing techniques to improve translation accuracy.
+- Expansion to support translation between additional languages.
+
+## Contributors
+
+- John Doe (@johndoe)
+- Jane Smith (@janesmith)
+- [Add more contributors if applicable]
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Acknowledgements
+
+We would like to express our gratitude to the organizers of the EPOCH hackathon for providing us with the opportunity to work on this challenging problem statement. Additionally, we thank our mentors and peers for their support and guidance throughout the development process.

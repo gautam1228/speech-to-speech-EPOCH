@@ -4,9 +4,12 @@ import tensorflow as tf
 from tensorflow.keras import layers, models
 
 # Function to load audio samples from directory
-def load_audio_samples(directory, max_length=None):
+def load_audio_samples(directory, max_length=None, num_samples=100):
     audio_samples = []
-    for filename in os.listdir(directory):
+    filenames = os.listdir(directory)
+    if num_samples is not None:
+        filenames = np.random.choice(filenames, num_samples, replace=False)
+    for filename in filenames:
         if filename.endswith(".npy"):
             file_path = os.path.join(directory, filename)
             audio = np.load(file_path)
